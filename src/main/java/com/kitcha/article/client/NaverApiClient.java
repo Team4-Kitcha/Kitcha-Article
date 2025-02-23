@@ -18,7 +18,6 @@ public class NaverApiClient {
 
     @Value("${naver.client-id}")
     private String clientId;
-
     @Value("${naver.client-secret}")
     private String clientSecret;
 

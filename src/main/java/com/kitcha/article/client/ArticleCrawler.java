@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ArticleCrawler {
-
     public String getArticleContent(String articleUrl) {
         try {
             Document document = Jsoup.connect(articleUrl)

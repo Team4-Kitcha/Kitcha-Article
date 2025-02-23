@@ -66,7 +66,6 @@ public class GroqApiClient {
             return "요약 실패: " + e.getMessage();
         }
     }
-
     private String trimContent(String content) {
         int maxLength = 1500;
         return (content != null && content.length() > maxLength) ? content.substring(0, maxLength) + "..." : content;
