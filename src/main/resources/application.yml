@@ -1,0 +1,11 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+
+naver:
+  client-id: ${NAVER_CLIENT_ID}
+  client-secret: ${NAVER_CLIENT_SECRET}
+
+groq:
+  api-key: ${GROQ_API_KEY:default_api_key}
+
