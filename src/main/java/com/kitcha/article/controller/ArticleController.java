@@ -1,5 +1,6 @@
 package com.kitcha.article.controller;
 
+import com.kitcha.article.dto.request.InterestNewsRequestDto;
 import com.kitcha.article.dto.response.MyPickNewsResponseDto;
 import com.kitcha.article.dto.response.RandomNewsResponseDto;
 import com.kitcha.article.service.MyPickNewsService;
@@ -20,6 +21,9 @@ public class ArticleController {
     private RandomNewsService randomNewsService;
     @Autowired
     private MyPickNewsService myPickNewsService;
+    //@Autowired
+    //private InterestService interestService;
+
 
     // MyPick 뉴스 가챠 API
     @GetMapping("/mypick")
@@ -37,6 +41,27 @@ public class ArticleController {
     public ResponseEntity<RandomNewsResponseDto> getRandomNews() {
         RandomNewsResponseDto randomNews = randomNewsService.getRandomNews();
         return ResponseEntity.ok(randomNews);
+    }
+
+    // 관심사 및 키워드 기반 뉴스 조회 API
+    @PostMapping("/interest_news")
+    public ResponseEntity<Map<String, Object>> getNewsByKeyword(@RequestBody InterestNewsRequestDto request) {
+        String interest = request.getInterest();
+        String keyword = request.getKeyword();
+
+        if (interest == null || interest.isBlank() || keyword == null || keyword.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "interest와 keyword가 모두 필요합니다."));
+        }
+
+        // 관심사 업데이트 서비스 호출
+        //interestService.setInterest(interest);
+
+        // 키워드 기반 뉴스 조회
+        List<MyPickNewsResponseDto> newsList = myPickNewsService.getMyPickNews(keyword);
+        // 응답 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("result", newsList);
+        return ResponseEntity.ok(response);
     }
 
 }
