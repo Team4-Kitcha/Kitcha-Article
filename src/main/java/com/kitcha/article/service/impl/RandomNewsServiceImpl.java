@@ -22,7 +22,11 @@ public class RandomNewsServiceImpl implements RandomNewsService {
     @Autowired
     private GroqApiClient groqApiClient;
 
-    private static final String[] INTERESTS = {"경제", "정치", "스포츠", "연예", "기술"};
+    private static final String[] INTERESTS =
+            {"드라마", "엔터", "뮤직", "영화",
+            "정치", "경제", "사회", "생활",
+            "주식", "문화", "IT/과학", "세계",
+            "야구", "축구", "농구", "아시안게임"};
 
     @Override
     public RandomNewsResponseDto getRandomNews() {
@@ -51,6 +55,6 @@ public class RandomNewsServiceImpl implements RandomNewsService {
         String keyword = groqApiClient.extractKeyword(longSummary);
 
         // 7. DTO 생성 및 반환
-        return new RandomNewsResponseDto(newsTitle, longSummary, keyword, randomInterest);
+        return new RandomNewsResponseDto(newsTitle,longSummary,randomInterest,keyword);
     }
 }
