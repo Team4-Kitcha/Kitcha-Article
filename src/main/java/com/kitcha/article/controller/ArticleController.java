@@ -1,7 +1,10 @@
 package com.kitcha.article.controller;
 
 import com.kitcha.article.dto.response.MyPickNewsResponseDto;
+import com.kitcha.article.dto.response.RandomNewsResponseDto;
 import com.kitcha.article.service.MyPickNewsService;
+import com.kitcha.article.service.RandomNewsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +16,12 @@ import java.util.Map;
 @RequestMapping("/apps")
 public class ArticleController {
 
-    private final MyPickNewsService myPickNewsService;
+    @Autowired
+    private RandomNewsService randomNewsService;
+    @Autowired
+    private MyPickNewsService myPickNewsService;
 
-    public ArticleController(MyPickNewsService myPickNewsService) {
-        this.myPickNewsService = myPickNewsService;
-    }
-    // 관심사 뉴스 API
+    // MyPick 뉴스 가챠 API
     @GetMapping("/mypick")
     public ResponseEntity<List<MyPickNewsResponseDto>> getMyPickNews(@RequestParam String keyword) {
         // 뉴스 목록 가져오기
@@ -28,4 +31,12 @@ public class ArticleController {
         response.put("result", newsList);
         return ResponseEntity.ok(newsList);
     }
+
+    // 랜덤 뉴스 가챠 API
+    @GetMapping("/random")
+    public ResponseEntity<RandomNewsResponseDto> getRandomNews() {
+        RandomNewsResponseDto randomNews = randomNewsService.getRandomNews();
+        return ResponseEntity.ok(randomNews);
+    }
+
 }

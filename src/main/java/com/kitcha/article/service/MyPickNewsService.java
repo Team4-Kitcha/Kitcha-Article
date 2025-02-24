@@ -5,5 +5,5 @@ import com.kitcha.article.dto.response.MyPickNewsResponseDto;
 import java.util.List;
 
 public interface MyPickNewsService {
-    List<MyPickNewsResponseDto> getMyPickNews(String keyword);
+    List<MyPickNewsResponseDto> getMyPickNews(String interest);
 }
