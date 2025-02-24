@@ -66,6 +66,7 @@ public class ArticleController {
 
         // 키워드 기반 뉴스 목록 조회
         List<MyPickNewsResponseDto> newsList = myPickNewsService.getMyPickNews(keyword);
+
         // 응답 반환
         Map<String, Object> response = new HashMap<>();
         response.put("result", newsList);
