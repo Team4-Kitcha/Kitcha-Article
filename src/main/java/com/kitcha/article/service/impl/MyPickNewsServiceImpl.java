@@ -25,6 +25,8 @@ public class MyPickNewsServiceImpl implements MyPickNewsService {
 
     @Override
     public List<MyPickNewsResponseDto> getMyPickNews(String interest) {
+
+        // 입력 값 기반 검색
         JsonNode items = naverApiClient.fetchNews(interest,5);
         List<MyPickNewsResponseDto> newsList = new ArrayList<>();
 
