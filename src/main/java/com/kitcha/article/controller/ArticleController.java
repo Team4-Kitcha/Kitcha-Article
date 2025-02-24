@@ -24,7 +24,7 @@ public class ArticleController {
     @Autowired
     private MyPickNewsService myPickNewsService;
     //@Autowired
-    //private InterestService interestService;
+    // private InterestService interestService;
     @Autowired
     private UploadNewsService uploadNewsService;
 
@@ -33,10 +33,10 @@ public class ArticleController {
     @GetMapping("/mypick")
     public ResponseEntity<List<MyPickNewsResponseDto>> getMyPickNews(
             @RequestParam String keyword,
-            @RequestHeader("X-User-ID") String userId) {
+            @RequestHeader("X-User-Id") String userId) {
         // 뉴스 목록 가져오기
         List<MyPickNewsResponseDto> newsList = myPickNewsService.getMyPickNews(keyword);
-        //result에 List 담기
+        // result에 List 담기
         Map<String, Object> response = new HashMap<>();
         response.put("result", newsList);
         return ResponseEntity.ok(newsList);
@@ -44,7 +44,7 @@ public class ArticleController {
 
     // 랜덤 뉴스 가챠 API
     @GetMapping("/random")
-    public ResponseEntity<RandomNewsResponseDto> getRandomNews(@RequestHeader("X-User-ID") String userId) {
+    public ResponseEntity<RandomNewsResponseDto> getRandomNews(@RequestHeader("X-User-Id") String userId) {
         RandomNewsResponseDto randomNews = randomNewsService.getRandomNews();
         return ResponseEntity.ok(randomNews);
     }
@@ -53,7 +53,7 @@ public class ArticleController {
     @PostMapping("/interest_news")
     public ResponseEntity<Map<String, Object>> getNewsByKeyword(
             @RequestBody InterestNewsRequestDto request,
-            @RequestHeader("X-User-ID") String userId) {
+            @RequestHeader("X-User-Id") String userId) {
         String interest = request.getInterest();
         String keyword = request.getKeyword();
 
@@ -62,7 +62,7 @@ public class ArticleController {
         }
 
         // 관심사 업데이트 서비스 호출
-        //interestService.setInterest(interest);
+        // interestService.setInterest(interest);
 
         // 키워드 기반 뉴스 목록 조회
         List<MyPickNewsResponseDto> newsList = myPickNewsService.getMyPickNews(keyword);
@@ -77,7 +77,7 @@ public class ArticleController {
     @PostMapping("/upload")
     public ResponseEntity<List<MyPickNewsResponseDto>> uploadImageAndGetNews(
             @RequestParam("file") MultipartFile file,
-            @RequestHeader("X-User-ID") String userId) {
+            @RequestHeader("X-User-Id") String userId) {
         // 1. 이미지 처리 및 키워드 기반 뉴스 조회
         List<MyPickNewsResponseDto> newsList = uploadNewsService.processUploadedImage(file);
         // 2. 결과 반환
