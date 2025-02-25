@@ -1,5 +1,6 @@
 package com.kitcha.article.controller;
 
+import com.kitcha.article.client.InterestServiceClient;
 import com.kitcha.article.dto.request.InterestNewsRequestDto;
 import com.kitcha.article.dto.response.MyPickNewsResponseDto;
 import com.kitcha.article.dto.response.RandomNewsResponseDto;
@@ -7,6 +8,7 @@ import com.kitcha.article.service.MyPickNewsService;
 import com.kitcha.article.service.RandomNewsService;
 import com.kitcha.article.service.UploadNewsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,8 +25,8 @@ public class ArticleController {
     private RandomNewsService randomNewsService;
     @Autowired
     private MyPickNewsService myPickNewsService;
-    //@Autowired
-    // private InterestService interestService;
+    @Autowired
+    private InterestServiceClient interestServiceClient;
     @Autowired
     private UploadNewsService uploadNewsService;
 
@@ -36,7 +38,7 @@ public class ArticleController {
             @RequestHeader("X-User-Id") String userId) {
         // 뉴스 목록 가져오기
         List<MyPickNewsResponseDto> newsList = myPickNewsService.getMyPickNews(keyword);
-        // result에 List 담기
+        //result에 List 담기
         Map<String, Object> response = new HashMap<>();
         response.put("result", newsList);
         return ResponseEntity.ok(newsList);
@@ -44,7 +46,8 @@ public class ArticleController {
 
     // 랜덤 뉴스 가챠 API
     @GetMapping("/random")
-    public ResponseEntity<RandomNewsResponseDto> getRandomNews(@RequestHeader("X-User-Id") String userId) {
+    public ResponseEntity<RandomNewsResponseDto> getRandomNews(
+            @RequestHeader("X-User-Id") String userId){
         RandomNewsResponseDto randomNews = randomNewsService.getRandomNews();
         return ResponseEntity.ok(randomNews);
     }
@@ -53,16 +56,22 @@ public class ArticleController {
     @PostMapping("/interest_news")
     public ResponseEntity<Map<String, Object>> getNewsByKeyword(
             @RequestBody InterestNewsRequestDto request,
-            @RequestHeader("X-User-Id") String userId) {
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader HttpHeaders headers) {
         String interest = request.getInterest();
         String keyword = request.getKeyword();
+
+        System.out.println("🚀 [Article 서버] 관심사 조회 API 호출");
+        System.out.println("🔑 User ID: " + userId);
+        System.out.println("💡 관심사: " + interest);
+        System.out.println("📦 키워드: " + keyword);
 
         if (interest == null || interest.isBlank() || keyword == null || keyword.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of("message", "interest와 keyword가 모두 필요합니다."));
         }
 
         // 관심사 업데이트 서비스 호출
-        // interestService.setInterest(interest);
+        interestServiceClient.setInterest(interest, headers);
 
         // 키워드 기반 뉴스 목록 조회
         List<MyPickNewsResponseDto> newsList = myPickNewsService.getMyPickNews(keyword);
