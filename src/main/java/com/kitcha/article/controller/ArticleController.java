@@ -38,7 +38,7 @@ public class ArticleController {
             @RequestHeader("X-User-Id") String userId) {
         // 뉴스 목록 가져오기
         List<MyPickNewsResponseDto> newsList = myPickNewsService.getMyPickNews(keyword);
-        //result에 List 담기
+        // result에 List 담기
         Map<String, Object> response = new HashMap<>();
         response.put("result", newsList);
         return ResponseEntity.ok(newsList);
@@ -47,7 +47,7 @@ public class ArticleController {
     // 랜덤 뉴스 가챠 API
     @GetMapping("/random")
     public ResponseEntity<RandomNewsResponseDto> getRandomNews(
-            @RequestHeader("X-User-Id") String userId){
+            @RequestHeader("X-User-Id") String userId) {
         RandomNewsResponseDto randomNews = randomNewsService.getRandomNews();
         return ResponseEntity.ok(randomNews);
     }
@@ -56,13 +56,13 @@ public class ArticleController {
     @PostMapping("/interest_news")
     public ResponseEntity<Map<String, Object>> getNewsByKeyword(
             @RequestBody InterestNewsRequestDto request,
-            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Email") String userEmail,
             @RequestHeader HttpHeaders headers) {
         String interest = request.getInterest();
         String keyword = request.getKeyword();
 
         System.out.println("🚀 [Article 서버] 관심사 조회 API 호출");
-        System.out.println("🔑 User ID: " + userId);
+        System.out.println("🔑 User Email: " + userEmail);
         System.out.println("💡 관심사: " + interest);
         System.out.println("📦 키워드: " + keyword);
 
